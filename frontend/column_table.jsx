@@ -8,7 +8,7 @@ export default class Column_table extends React.Component{
                 <tr>
                     <td>{this.props.time}</td>
                     <td>{this.props.CO2}</td>
-                    <td>{this.props.TV}</td>
+                    <td>{this.props.TVOC}</td>
                     <td>{this.props.temp}</td>
                 </tr>
         )

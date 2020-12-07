@@ -29,40 +29,48 @@ export default class ButtonApi extends React.Component{
         console.log(1);
     }
     getTable(){
-        /*const head = {
+        const head = {
             headers: { 'Content-Type': 'application/json' }
           };
-        axios.get(`http://192.168.31.188:8080/getMess`,head).then((response)=>console.log(response.data));*/
-        let old_data_table = this.state.data_table;
-        let data_table={
-            time:"newTime",
-            CO2:"Дохуя",
-            huita:"newHuita",
-            temp:"36.19"
-        }
-        old_data_table.push(data_table);
-        let new_table_data = old_data_table;
-        this.setState({data_table:new_table_data});
-        this.setState({state:"update_table"});
-        console.log(this.state.data_table);
+        axios.get(`http://192.168.31.188:8080/getMess`,head).then((response)=>{
+            console.log(response.data)
+            let old_data_table = this.state.data_table;
+            var now = new Date().toLocaleString();
+            let data_table={
+                time: now,
+                CO2:response.data.co2,
+                TVOC:response.data.tvoc,
+                temp:response.data.temperature
+            }
+            old_data_table.unshift(data_table);
+            let new_table_data = old_data_table;
+            this.setState({data_table:new_table_data});
+            this.setState({state:"update_table"});
+            console.log(this.state.data_table);
+    
+    });
         
     }
     alertData(){
-        console.log(1);
-        axios.get(`https://api.binance.com/api/v1/klines?symbol=BTCUSDT&interval=1m&limit=1`).then((response)=>{
+        console.log('start request');
+        axios.get(`http://192.168.31.188:8080/getMess`).then((response)=>{
             this.setState({data:response.data})
-            let check = 100;
-            if(check<150){
+            let check = response.data.co2;
+            if(check<550){
                 this.setState({state:"greenBox"})
             }
             else{
                 this.setState({state:"redBox"})
             }
+            console.log(response.data);
         })
     }
     render(){
         const {state,data_table} = this.state;
-        //const inter = setInterval(this.alertData,10000);
+        /*while(true){
+            const inter = setInterval(this.alertData,5000);
+        }*/
+        //const inter = setInterval(this.alertData,5000);
         if(state=="start"){
             return(
                 <div>
@@ -75,7 +83,7 @@ export default class ButtonApi extends React.Component{
                             <tr>
                                 <th>Time</th>
                                 <th>CO2</th>
-                                <th>TV</th>
+                                <th>Tvoc</th>
                                 <th>temp</th>
                             </tr>
                         </thead>
@@ -97,15 +105,15 @@ export default class ButtonApi extends React.Component{
                         <div className="data_table">
                       <Table striped bordered hover variant="dark">
                         <thead>
-                            <tr>
+                        <tr>
                                 <th>Time</th>
                                 <th>CO2</th>
-                                <th>TV</th>
+                                <th>Tvoc</th>
                                 <th>temp</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {data_table.map((data_table)=>{return <Column_table time={data_table.time} TV={data_table.TV}
+                            {data_table.map((data_table)=>{return <Column_table time={data_table.time} TVOC={data_table.tvoc}
                              CO2={data_table.CO2} temp={data_table.temp}/>})}
                         </tbody>
                         </Table>
@@ -124,15 +132,15 @@ export default class ButtonApi extends React.Component{
                         <div className="data_table">
                       <Table striped bordered hover variant="dark">
                         <thead>
-                            <tr>
+                        <tr>
                                 <th>Time</th>
                                 <th>CO2</th>
-                                <th>TV</th>
+                                <th>Tvoc</th>
                                 <th>temp</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {data_table.map((data_table)=>{return <Column_table time={data_table.time} TV={data_table.TV}
+                            {data_table.map((data_table)=>{return <Column_table time={data_table.time} TVOC={data_table.TVOC}
                              CO2={data_table.CO2} temp={data_table.temp}/>})}
                         </tbody>
                         </Table>
@@ -149,15 +157,15 @@ export default class ButtonApi extends React.Component{
                       <div className="data_table">
                       <Table striped bordered hover variant="dark">
                         <thead>
-                            <tr>
+                        <tr>
                                 <th>Time</th>
                                 <th>CO2</th>
-                                <th>TV</th>
+                                <th>Tvoc</th>
                                 <th>temp</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {data_table.map((data_table)=>{return <Column_table time={data_table.time} TV={data_table.TV}
+                            {data_table.map((data_table)=>{return <Column_table time={data_table.time} TVOC={data_table.TVOC}
                              CO2={data_table.CO2} temp={data_table.temp}/>})}
                         </tbody>
                         </Table>
