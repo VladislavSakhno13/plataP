@@ -1,5 +1,21 @@
+*{  box-sizing: border-box;
+    padding: 0 auto;
+    margin: 0 auto;
+}
 .alertBox{
+    position: absolute;
     width: 250px;
     height: 450px;
     border: 1px solid #000;
+}
+.alet{
+    position: absolute;
+    display: inline-block;
+    width: 50%;
+}
+.data_table{
+    position: absolute;
+    left: 50%;
+    display: inline-block;
+    width: 50%;
 }

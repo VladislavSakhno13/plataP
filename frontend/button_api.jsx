@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import Signal from './signal.jsx';
+import Column_table from './column_table.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Form,Button,Table,Nav,Navbar,NavDropdown,FormControl,ButtonGroup,Carousel,Item, Alert} from 'react-bootstrap';
 export default class ButtonApi extends React.Component{
@@ -10,7 +11,8 @@ export default class ButtonApi extends React.Component{
         this.state={
             state:"start",
             data:null,
-            data_fire:undefined
+            data_fire:undefined,
+            data_table:[]
         }
         this.alertData=this.alertData.bind(this);
         this.change_state_green=this.change_state_green.bind(this);
@@ -27,13 +29,23 @@ export default class ButtonApi extends React.Component{
         console.log(1);
     }
     getTable(){
-      let data_fire={
-        co2:"10",
-        time:"12:87",
-        timerture:"Норм так"
-      }
-      this.setState({data_fire:data_fire})
-        console.log(this.state.data_fire);
+        /*const head = {
+            headers: { 'Content-Type': 'application/json' }
+          };
+        axios.get(`http://192.168.31.188:8080/getMess`,head).then((response)=>console.log(response.data));*/
+        let old_data_table = this.state.data_table;
+        let data_table={
+            time:"newTime",
+            CO2:"Дохуя",
+            huita:"newHuita",
+            temp:"36.19"
+        }
+        old_data_table.push(data_table);
+        let new_table_data = old_data_table;
+        this.setState({data_table:new_table_data});
+        this.setState({state:"update_table"});
+        console.log(this.state.data_table);
+        
     }
     alertData(){
         console.log(1);
@@ -49,28 +61,108 @@ export default class ButtonApi extends React.Component{
         })
     }
     render(){
-        const {state} = this.state;
+        const {state,data_table} = this.state;
         //const inter = setInterval(this.alertData,10000);
         if(state=="start"){
             return(
                 <div>
-                      <Button variant="secondary" onClick={this.getTable}>Получить показания</Button>
+                        <div className="alet">
+                        <Button variant="secondary" onClick={this.getTable}>Получить показания</Button>
+                        </div>
+                      <div className="data_table">
+                      <Table striped bordered hover variant="dark">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>CO2</th>
+                                <th>TV</th>
+                                <th>temp</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        </Table>
+                      </div>
                 </div>
             )
         }
         if(state=="greenBox"){
             return(
                 <div>
-                      <Button variant="secondary" onClick={this.alertData}>Получить показания</Button>
-                      <Signal signal={"Все по кайфу"} color={"#2CFF18"}/>
+                       <div className="alet">
+                        <Button variant="secondary" onClick={this.getTable}>Получить показания</Button>
+                        <Signal signal={"Все по кайфу"} color={"#2CFF18"}/>
+                        </div>
+
+                        <div className="data_table">
+                      <Table striped bordered hover variant="dark">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>CO2</th>
+                                <th>TV</th>
+                                <th>temp</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {data_table.map((data_table)=>{return <Column_table time={data_table.time} TV={data_table.TV}
+                             CO2={data_table.CO2} temp={data_table.temp}/>})}
+                        </tbody>
+                        </Table>
+                      </div>
                 </div>
             )
         }
         if(state=="redBox"){
             return(
                 <div>
-                      <Button variant="secondary" onClick={this.alertData}>Получить показания</Button>
-                      <Signal signal={"Жопа все горит"} color={"#FF1839"}/>
+                      <div className="alet">
+                        <Button variant="secondary" onClick={this.getTable}>Получить показания</Button>
+                        <Signal signal={"Жопа все горит"} color={"#FF1839"}/>
+                        </div>
+                        
+                        <div className="data_table">
+                      <Table striped bordered hover variant="dark">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>CO2</th>
+                                <th>TV</th>
+                                <th>temp</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {data_table.map((data_table)=>{return <Column_table time={data_table.time} TV={data_table.TV}
+                             CO2={data_table.CO2} temp={data_table.temp}/>})}
+                        </tbody>
+                        </Table>
+                      </div>
+                </div>
+            )
+        }
+        if(state=="update_table"){
+            return(
+                <div>
+                    <div className="alet">
+                        <Button variant="secondary" onClick={this.getTable}>Получить показания</Button>
+                        </div>
+                      <div className="data_table">
+                      <Table striped bordered hover variant="dark">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>CO2</th>
+                                <th>TV</th>
+                                <th>temp</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {data_table.map((data_table)=>{return <Column_table time={data_table.time} TV={data_table.TV}
+                             CO2={data_table.CO2} temp={data_table.temp}/>})}
+                        </tbody>
+                        </Table>
+                      </div>
+                      
                 </div>
             )
         }
